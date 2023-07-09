@@ -1,0 +1,16 @@
+version: "3"
+services:
+  iptables:
+    image: iptables
+    build:
+      context: .
+    environment:
+      - CHAIN=MYCHAIN
+      - SRC_PORT=10443
+      - DST_IP=93.184.216.34 # IP address of example.com
+      - DST_PORT=443
+    entrypoint: sh -c "./port_forwarding_tcp.sh && curl -ik https://localhost:10443"
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./port_forwarding_tcp.sh:/port_forwarding_tcp.sh:cache
